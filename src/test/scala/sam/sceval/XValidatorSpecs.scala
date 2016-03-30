@@ -9,7 +9,7 @@ import Arbitrary.arbitrary
 
 import scala.util.{Random, Success, Failure, Try}
 
-class XValidatorSpecs extends Specification with ScalaCheck with IntellijHighlighingTrick {
+class XValidatorSpecs extends Specification with ScalaCheck {
   sequential
   val sc = StaticSparkContext.staticSc
 
@@ -23,7 +23,7 @@ class XValidatorSpecs extends Specification with ScalaCheck with IntellijHighlig
     Arbitrary(listOfNs[(Int, Boolean)](List(1, 2, 4, 8, 10, 15, 20, 50, 100)))
 
   "XValidator" should {
-    "split into fold folds and are same size (with possible off by ones)" ! check(prop(
+    "split into fold folds and are same size (with possible off by ones)" ! prop(
       (featuresAndLabels: List[(Int, Boolean)], partitions: Int) =>
         Try(xvalidator.split(sc.makeRDD(featuresAndLabels, partitions))) match {
           case Failure(e) => e.isInstanceOf[IllegalArgumentException] must beTrue
@@ -34,9 +34,9 @@ class XValidatorSpecs extends Specification with ScalaCheck with IntellijHighlig
             val total = foldSizeMap.values.sum
             foldSizeMap.values.toSet must_===
               (if (total % folds == 0) Set(total / folds) else Set(total / folds, total / folds + 1))
-        }))
+        })
 
-    "Not lose any records in full cross validation" ! check(prop(
+    "Not lose any records in full cross validation" ! prop(
       (featuresAndLabels: List[(Int, Boolean)], partitions: Int) => Try(xvalidator.xval[Int](
         trainAndScoreByModel = _.map {
           case (fold, feature, label) => (fold, new Random().nextDouble(), label)
@@ -45,7 +45,7 @@ class XValidatorSpecs extends Specification with ScalaCheck with IntellijHighlig
       ) match {
         case Failure(e) => e.isInstanceOf[IllegalArgumentException] must beTrue
         case Success(confusions) => confusions.head.total must_=== featuresAndLabels.size.toLong
-      }))
+      })
 
     "compute correct BinaryConfusionMatricies" in {
       val scoresAndLabelsByModel: RDD[(Int, Double, Boolean)] = sc.makeRDD(
