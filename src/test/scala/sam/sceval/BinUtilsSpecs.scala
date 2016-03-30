@@ -3,13 +3,14 @@ package sam.sceval
 import BinUtils._
 import org.scalacheck.{Arbitrary, Gen}
 import org.specs2.ScalaCheck
-import org.specs2.matcher.Parameters
 import org.specs2.mutable.Specification
+import org.specs2.scalacheck.Parameters
 
 class BinUtilsSpecs extends Specification with ScalaCheck {
   sequential
 
-  implicit val params = Parameters(minTestsOk = 500)
+  implicit val parameters: Parameters = Parameters(minTestsOk = 500)
+  implicit val prettyFreqMap = org.scalacheck.util.Pretty
 
   "Binner factory" should {
     "Return a binner that bins correctly" in {
@@ -54,7 +55,7 @@ class BinUtilsSpecs extends Specification with ScalaCheck {
 
     implicit val _: Arbitrary[Int] = Arbitrary(Gen.choose(1, 20))
 
-    "binner always evenly bins except for last bin, and each bin correct size" ! check(prop(
+    "binner always evenly bins except for last bin, and each bin correct size" ! prop(
       (partitionLastIndexes: List[Map[Int, Int]], recordsPerBin: Int) => {
         val binner = binnerFac[Int](partitionLastIndexes.map(_.mapValues(_.toLong)).toArray, recordsPerBin)
 
@@ -68,7 +69,7 @@ class BinUtilsSpecs extends Specification with ScalaCheck {
             val commonBinCounts = rest.map(_._2).distinct
             commonBinCounts.size <= 1 && (lastBinCount +: commonBinCounts).forall(_ <= recordsPerBin)
         }) must beTrue
-      }))
+      })
   }
 
   "viable bin optimizer" should {
@@ -78,9 +79,9 @@ class BinUtilsSpecs extends Specification with ScalaCheck {
 
     implicit val _: Arbitrary[Int] = Arbitrary(Gen.choose(1, 500))
 
-    "Always perform as well as brute force search" ! check(prop((totalRecods: Int, desiredBins: Int) => {
+    "Always perform as well as brute force search" ! prop((totalRecods: Int, desiredBins: Int) => {
       optimizeRecordsPerBin(totalRecods, desiredBins) must_== bruteForce(totalRecods, desiredBins)
-    }))
+    })
 
     def test(totalRecords: Int, desiredBins: Int, expectedBinSize: Int) = {
       s"select closest viable bin ($totalRecords, $desiredBins) == $expectedBinSize" in {

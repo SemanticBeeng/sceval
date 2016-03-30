@@ -10,13 +10,13 @@ resolvers ++= Seq(
 )
 
 libraryDependencies ++= Seq(
-  "org.scalacheck" %% "scalacheck" % "1.12.1" % "test" withSources() withJavadoc(),
-  "org.specs2" %% "specs2-core" % "2.4.15" % "test" withSources() withJavadoc(),
-  "org.specs2" %% "specs2-scalacheck" % "2.4.15" % "test" withSources() withJavadoc(),
+  "org.scalacheck" %% "scalacheck" % "1.13.0" % "test",
+  "org.specs2" %% "specs2-core" % "3.7.2" % "test",
+  "org.specs2" %% "specs2-scalacheck" % "3.7.2" % "test",
   // For some reason omitting spark-sql causes crazy exceptions ... *tut* *tut* typical
-  ("org.apache.spark" % "spark-sql_2.10" % "1.3.0-cdh5.4.2") withSources() withJavadoc(),
-  ("org.apache.spark" % "spark-core_2.10" % "1.3.0-cdh5.4.2") withSources() withJavadoc(),
-  ("org.apache.spark" % "spark-mllib_2.10" % "1.3.0-cdh5.4.2") withSources() withJavadoc()
+  ("org.apache.spark" % "spark-sql_2.11" % "1.6.1") excludeAll(ExclusionRule(organization = "org.specs2")),
+  ("org.apache.spark" % "spark-core_2.11" % "1.6.1") excludeAll(ExclusionRule(organization = "org.specs2")),
+  ("org.apache.spark" % "spark-mllib_2.11" % "1.6.1") excludeAll(ExclusionRule(organization = "org.specs2"))
 )
 
 
@@ -46,7 +46,7 @@ mergeStrategy in assembly <<= (mergeStrategy in assembly)((old) => {
   case PathList(_*) => MergeStrategy.first // added this line
 })
 
-scalaVersion := "2.10.4"
+scalaVersion := "2.11.7"
 
 //scalacOptions ++= Seq("-deprecation", "-feature")
 
