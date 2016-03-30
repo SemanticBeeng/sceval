@@ -7,7 +7,7 @@ import org.specs2.mutable.Specification
 import sam.sceval.EvaluationPimps._
 import Arbitrary.arbitrary
 
-class PimpedScoresAndLabelsRDDProps extends Specification with ScalaCheck {
+class PimpedScoresAndLabelsRDDProps extends Specification with ScalaCheck with IntellijHighlighingTrick {
   sequential
 
   val sc = StaticSparkContext.staticSc

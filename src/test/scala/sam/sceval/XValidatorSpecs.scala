@@ -9,7 +9,7 @@ import Arbitrary.arbitrary
 
 import scala.util.{Random, Success, Failure, Try}
 
-class XValidatorSpecs extends Specification with ScalaCheck {
+class XValidatorSpecs extends Specification with ScalaCheck with IntellijHighlighingTrick {
   sequential
   val sc = StaticSparkContext.staticSc
 
