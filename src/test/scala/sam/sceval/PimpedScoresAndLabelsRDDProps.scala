@@ -44,7 +44,7 @@ class PimpedScoresAndLabelsRDDProps extends Specification with ScalaCheck with I
               sc.makeRDD(scoresAndLabels, partitions).confusions(bins = Some(bins)).toList.sortBy(_.predictedPositives)
           }
       })
-
+   //TODO: @SemanticBeeng
    /* "Returns all confusions from largest to smallest" ! prop(
       (modelToScoresAndLabels: List[Map[Int, (Double, Boolean)]], bins: Int, partitions: Int) => (bins > 1) ==> {
         sc.makeRDD(modelToScoresAndLabels).confusionsByModel(bins = Some(bins)).collect().foreach {
