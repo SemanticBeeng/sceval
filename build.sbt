@@ -16,9 +16,9 @@ libraryDependencies ++= Seq(
   "org.specs2" %% "specs2-core" % "3.7.2" % "test",
   "org.specs2" %% "specs2-scalacheck" % "3.7.2" % "test",
   // For some reason omitting spark-sql causes crazy exceptions ... *tut* *tut* typical
-  ("org.apache.spark" % "spark-sql" % "1.6.1") excludeAll(ExclusionRule(organization = "org.specs2")),
-  ("org.apache.spark" % "spark-core" % "1.6.1") excludeAll(ExclusionRule(organization = "org.specs2")),
-  ("org.apache.spark" % "spark-mllib" % "1.6.1") excludeAll(ExclusionRule(organization = "org.specs2"))
+  ("org.apache.spark" % "spark-sql_2.11" % "1.6.1") excludeAll(ExclusionRule(organization = "org.specs2")),
+  ("org.apache.spark" % "spark-core_2.11" % "1.6.1") excludeAll(ExclusionRule(organization = "org.specs2")),
+  ("org.apache.spark" % "spark-mllib_2.11" % "1.6.1") excludeAll(ExclusionRule(organization = "org.specs2"))
 )
 
 
