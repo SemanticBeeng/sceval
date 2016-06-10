@@ -5,3 +5,6 @@ target/
 zip-me.sh
 project/.boot/
 project/.ivy/
+project/.sbtboot
+project/target
+
